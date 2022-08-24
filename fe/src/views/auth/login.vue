@@ -10,7 +10,7 @@
           >
             <label class="label">Email</label>
             <div class="control">
-              <input class="input" v-model="form.email" placeholder="e.g. alex@example.com" type="email">
+              <input v-model="form.email" class="input" placeholder="e.g. alex@example.com" type="email">
             </div>
             <small class="text-danger">{{ errors[0] }}</small>
           </validation-provider>
@@ -20,17 +20,19 @@
           <validation-provider
             #default="{ errors }"
             name="Password"
-            rules="required|password"
+            rules="required"
           >
-          <label class="label">Password</label>
-          <div class="control">
-            <input v-model="form.password" class="input" placeholder="********" type="password">
-          </div>
+            <label class="label">Password</label>
+            <div class="control">
+              <input v-model="form.password" class="input" placeholder="********" type="password">
+            </div>
             <small class="text-danger">{{ errors[0] }}</small>
           </validation-provider>
         </div>
 
-        <button class="button is-primary">Sign in</button>
+        <button class="button is-primary" @click="login" :disabled="is_btn_loading">
+          {{is_btn_loading?'Signing....':'Sign in'}}
+        </button>
       </validation-observer>
     </form>
   </div>
@@ -38,6 +40,7 @@
 
 <script>
 import {ValidationObserver, ValidationProvider} from 'vee-validate'
+import authAPI from "@/apis/modules/auth_apis";
 
 export default {
   components: {
@@ -47,20 +50,27 @@ export default {
   name: "login",
   data() {
     return {
-      form : {
-        email:'',
-        password:''
+      is_btn_loading: false,
+      form: {
+        email: '',
+        password: ''
       }
     }
   },
   mounted() {
 
   },
-  methods : {
-    async login(){
-      if(await this.$refs.loginValidation.validate()){
+  methods: {
+    async login() {
+      try {
+        if (await this.$refs.loginValidation.validate()) {
+          this.is_btn_loading = true
+          await authAPI.login(this.form)
+        }
+      } catch (e) {
 
       }
+
     }
   }
 }
