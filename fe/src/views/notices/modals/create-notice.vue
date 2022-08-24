@@ -37,8 +37,10 @@
 
 <script>
 import noticeAPI from "../../../apis/modules/notice_apis";
+import ToastMixins from "../../../mixins/ToastMixin";
 export default {
   name: "create-notice",
+  mixins:[ToastMixins],
   data() {
     return {
       isComponentModalActive: false,
@@ -54,10 +56,12 @@ export default {
       this.isComponentModalActive = !this.isComponentModalActive
     },
 
-   async createNotice() {
+    async createNotice() {
       try {
         let respond = await noticeAPI.create_notices(this.form)
+         this.danger("Notice was created");
       }catch (e) {
+         this.success(e.message);
 
       }
     }
