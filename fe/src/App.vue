@@ -1,12 +1,15 @@
 <template>
   <div id="app">
+    <top-nav/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import TopNav from "./layouts/top-nav";
 export default {
-  name: 'App'
+  name: 'App',
+  components: {TopNav}
 }
 </script>
 
