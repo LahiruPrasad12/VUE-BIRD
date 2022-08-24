@@ -12,9 +12,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "buefy": "^0.9.21",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1",
-    "buefy": "^0.9.21"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -50,10 +51,10 @@
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
+    "vee-validate": "3.4.5",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
-    "vee-validate": "3.4.5",
     "vuex": "3.6.0",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
