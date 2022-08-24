@@ -40,7 +40,7 @@ export default {
   methods:{
     async getAllNotices(){
       try {
-        let respond = (await noticeAPI.all_notices()).data.data
+        let respond = (await noticeAPI.all_notices()).data.data.all_notices
         this.notices = respond.map((e,index)=>({
           id : index+1,
           title : e.title,

@@ -3,87 +3,63 @@
     <section>
       <b-modal
         v-model="isComponentModalActive"
-        has-modal-card
-        trap-focus
         :destroy-on-hide="false"
-        aria-role="dialog"
         aria-label="Example Modal"
+        aria-modal
+        aria-role="dialog"
         close-button-aria-label="Close"
-        aria-modal>
-        <template #default="props">
-          <modal-form v-bind="formProps" @close="props.close"></modal-form>
-        </template>
+        has-modal-card
+        trap-focus>
+        <div class="card" style="width: auto">
+
+          <form class="box">
+            <div class="field">
+              <label class="label">Title</label>
+              <div class="control">
+                <input class="input" v-model="form.title" placeholder="e.g. alex@example.com" type="text">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Description</label>
+              <div class="control">
+                <input class="input" v-model="form.description" placeholder="Description" type="text">
+              </div>
+            </div>
+
+            <button class="button is-primary" @click="createNotice">Create Note</button>
+          </form>
+        </div>
       </b-modal>
     </section>
   </div>
 </template>
 
 <script>
-const ModalForm = {
-  props: ['email', 'password', 'canCancel'],
-  template: `
-            <form action="">
-                <div class="modal-card" style="width: auto">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Login</p>
-                        <button
-                            type="button"
-                            class="delete"
-                            @click="$emit('close')"/>
-                    </header>
-                    <section class="modal-card-body">
-                        <b-field label="Email">
-                            <b-input
-                                type="email"
-                                :value="email"
-                                placeholder="Your email"
-                                required>
-                            </b-input>
-                        </b-field>
-
-                        <b-field label="Password">
-                            <b-input
-                                type="password"
-                                :value="password"
-                                password-reveal
-                                placeholder="Your password"
-                                required>
-                            </b-input>
-                        </b-field>
-
-                        <b-checkbox>Remember me</b-checkbox>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <b-button
-                            label="Close"
-                            @click="$emit('close')" />
-                        <b-button
-                            label="Login"
-                            type="is-primary" />
-                    </footer>
-                </div>
-            </form>
-        `
-}
-
+import noticeAPI from "../../../apis/modules/notice_apis";
 export default {
   name: "create-notice",
-  components: {
-    ModalForm
-  },
   data() {
     return {
       isComponentModalActive: false,
-      formProps: {
-        email: 'evan@you.com',
-        password: 'testing'
+      form: {
+        title: '',
+        description: ''
       }
     }
   },
 
-  methods:{
-    handleForm (){
+  methods: {
+    handleForm() {
       this.isComponentModalActive = !this.isComponentModalActive
+    },
+
+   async createNotice() {
+      try {
+        let respond = await noticeAPI.create_notices(this.form)
+      }catch (e) {
+
+      }
     }
   }
 }
