@@ -4,43 +4,64 @@
     <b-button type="is-primary" @click="openModel">Create Notice</b-button>
     <b-table
       :data="notices"
-      :columns="fields"
       ref="noticeTable"
       :loading="is_table_loading"
       hover
       responsive
     >
+      <b-table-column field="id" label="ID">
+        <template v-slot:header="{ column }">
+          <b-tooltip :label="column.label" append-to-body dashed>
+            {{ column.label }}
+          </b-tooltip>
+        </template>
+        <template v-slot="props">
+          {{ props.row.id }}
+        </template>
+      </b-table-column>
+      <b-table-column field="title" label="Title">
+        <template v-slot:header="{ column }">
+          <b-tooltip :label="column.label" append-to-body dashed>
+            {{ column.label }}
+          </b-tooltip>
+        </template>
+        <template v-slot="props">
+          {{ props.row.title }}
+        </template>
+      </b-table-column>
+
+      <b-table-column field="description" label="Description">
+        <template v-slot:header="{ column }">
+          <b-tooltip :label="column.label" append-to-body dashed>
+            {{ column.label }}
+          </b-tooltip>
+        </template>
+        <template v-slot="props">
+          {{ props.row.description }}
+        </template>
+      </b-table-column>
+      <b-table-column field="action" label="Action">
+        <template v-slot="props">
+          <b-button @click="editeColumn(props.row)">Edit</b-button>
+        </template>
+      </b-table-column>
 
     </b-table>
-
-<!--    <b-table-->
-<!--      ref="table"-->
-<!--      :current-page="currentPage"-->
-<!--      :fields="fields"-->
-<!--      :filter="filter"-->
-<!--      :filter-included-fields="filterOn"-->
-<!--      :items="getList"-->
-<!--      :per-page="pagination.perPage"-->
-<!--      :sort-by.sync="sortBy"-->
-<!--      :sort-desc.sync="sortDesc"-->
-<!--      :sort-direction="sortDirection"-->
-<!--      class="mobile_table_css"-->
-
-<!--      hover-->
-<!--      responsive-->
-<!--    >-->
-<!--    </b-table>-->
-    <createNotice ref="form"/>
+    <createNotice ref="create_form"/>
+    <editeNotice ref="edit_form"/>
   </div>
 </template>
 
 <script>
 import createNotice from "./modals/create-notice";
+import editeNotice from "./modals/edit-notices";
+
 import noticeAPI from "../../apis/modules/notice_apis";
 export default {
   name: "index",
   components :{
-    createNotice
+    createNotice,
+    editeNotice
   },
   data(){
     return {
@@ -58,6 +79,10 @@ export default {
         {
           field: 'description',
           label: 'Description',
+        },
+        {
+          field: 'action',
+          label: 'Action',
         }
       ],
       notices : [],
@@ -82,11 +107,16 @@ export default {
     },
 
     openModel (){
-      this.$refs.form.openForm()
+      this.$refs.create_form.openForm()
     },
 
     closeModel(){
       this.getAllNotices()
+    },
+
+    editeColumn(data){
+      this.$refs.edit_form.openForm(data)
+      console.log(data)
     }
   },
 
