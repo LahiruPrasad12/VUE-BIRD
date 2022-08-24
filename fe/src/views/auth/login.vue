@@ -30,8 +30,8 @@
           </validation-provider>
         </div>
 
-        <button class="button is-primary" @click="login" :disabled="is_btn_loading">
-          {{is_btn_loading?'Signing....':'Sign in'}}
+        <button :disabled="is_btn_loading" class="button is-primary" @click="loginForm">
+          {{ is_btn_loading ? 'Signing....' : 'Sign in' }}
         </button>
       </validation-observer>
     </form>
@@ -40,13 +40,16 @@
 
 <script>
 import {ValidationObserver, ValidationProvider} from 'vee-validate'
-import authAPI from "@/apis/modules/auth_apis";
+import ToastMixin from "../../mixins/ToastMixin";
+import {mapActions} from 'vuex'
+
 
 export default {
   components: {
     ValidationProvider,
     ValidationObserver
   },
+  mixins: [ToastMixin],
   name: "login",
   data() {
     return {
@@ -61,14 +64,15 @@ export default {
 
   },
   methods: {
-    async login() {
+    ...mapActions(['login']),
+    async loginForm() {
       try {
         if (await this.$refs.loginValidation.validate()) {
-          this.is_btn_loading = true
-          let respond = await authAPI.login(this.form)
+          await this.login(this.form)
+          await this.$router.push('/notice')
         }
       } catch (e) {
-
+        this.danger('user name or password is incorrect')
       }
       this.is_btn_loading = true
 

@@ -1,6 +1,7 @@
 <template>
 
   <div class="container">
+    {{currentUser.first_name}}
     <b-button type="is-primary" @click="openModel">Create Notice</b-button>
     <b-table
       :data="notices"
@@ -55,6 +56,8 @@
 <script>
 import createNotice from "./modals/create-notice";
 import editeNotice from "./modals/edit-notices";
+import {mapGetters} from 'vuex'
+
 
 import noticeAPI from "../../apis/modules/notice_apis";
 export default {
@@ -89,7 +92,9 @@ export default {
       is_table_loading:false
     }
   },
-
+  computed: {
+    ...mapGetters(['currentUser'])
+  },
   methods:{
     async getAllNotices(){
       try {
@@ -121,6 +126,8 @@ export default {
   },
 
   async mounted() {
+    console.log('ava')
+    console.log(this.currentUser)
     await this.getAllNotices()
   }
 }
