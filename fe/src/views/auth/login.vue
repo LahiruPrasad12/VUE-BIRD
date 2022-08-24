@@ -1,28 +1,68 @@
 <template>
-  <div>
+  <div class="container">
     <form class="box">
-      <div class="field">
-        <label class="label">Email</label>
-        <div class="control">
-          <input class="input" type="email" placeholder="e.g. alex@example.com">
+      <validation-observer ref="loginValidation">
+        <div class="field">
+          <validation-provider
+            #default="{ errors }"
+            name="Email"
+            rules="required|emailTest"
+          >
+            <label class="label">Email</label>
+            <div class="control">
+              <input class="input" v-model="form.email" placeholder="e.g. alex@example.com" type="email">
+            </div>
+            <small class="text-danger">{{ errors[0] }}</small>
+          </validation-provider>
         </div>
-      </div>
 
-      <div class="field">
-        <label class="label">Password</label>
-        <div class="control">
-          <input class="input" type="password" placeholder="********">
+        <div class="field">
+          <validation-provider
+            #default="{ errors }"
+            name="Password"
+            rules="required|password"
+          >
+          <label class="label">Password</label>
+          <div class="control">
+            <input v-model="form.password" class="input" placeholder="********" type="password">
+          </div>
+            <small class="text-danger">{{ errors[0] }}</small>
+          </validation-provider>
         </div>
-      </div>
 
-      <button class="button is-primary">Sign in</button>
+        <button class="button is-primary">Sign in</button>
+      </validation-observer>
     </form>
   </div>
 </template>
 
 <script>
+import {ValidationObserver, ValidationProvider} from 'vee-validate'
+
 export default {
-  name: "login"
+  components: {
+    ValidationProvider,
+    ValidationObserver
+  },
+  name: "login",
+  data() {
+    return {
+      form : {
+        email:'',
+        password:''
+      }
+    }
+  },
+  mounted() {
+
+  },
+  methods : {
+    async login(){
+      if(await this.$refs.loginValidation.validate()){
+
+      }
+    }
+  }
 }
 </script>
 
