@@ -1,13 +1,20 @@
 <template>
+
   <div class="container">
-    <b-table :data="notices" :columns="columns"></b-table>
+    <b-button type="is-primary" @click="openModel">Create Notice</b-button>
+    <b-table :data="notices" :columns="columns" ></b-table>
+    <createNotice ref="form"/>
   </div>
 </template>
 
 <script>
+import createNotice from "./modals/create-notice";
 import noticeAPI from "../../apis/modules/notice_apis";
 export default {
   name: "index",
+  components :{
+    createNotice
+  },
   data(){
     return {
       columns: [
@@ -42,6 +49,10 @@ export default {
       }catch (e) {
 
       }
+    },
+
+    openModel (){
+      this.$refs.form.handleForm()
     }
   },
 
