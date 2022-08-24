@@ -2,7 +2,7 @@ export default {
   methods: {
     danger(message) {
       this.$buefy.toast.open({
-        duration: 500,
+        duration: 5000,
         message: `${message}`,
         type: 'is-danger',
       })

@@ -27,7 +27,11 @@
               </div>
             </div>
 
-            <button class="button is-primary" @click="createNotice">Create Note</button>
+            <button class="button is-primary" @click="createNotice"
+                    :disabled="is_btn_loading"
+            >
+              {{is_btn_loading?'Creating...':'Create Notice'}}
+            </button>
           </form>
         </div>
       </b-modal>
@@ -44,6 +48,7 @@ export default {
   data() {
     return {
       isComponentModalActive: false,
+      is_btn_loading : false,
       form: {
         title: '',
         description: ''
@@ -52,14 +57,21 @@ export default {
   },
 
   methods: {
-    handleForm() {
+    openForm() {
       this.isComponentModalActive = !this.isComponentModalActive
+    },
+
+    closeForm (){
+      this.isComponentModalActive = !this.isComponentModalActive
+      this.$parent.closeModel()
     },
 
     async createNotice() {
       try {
         let respond = await noticeAPI.create_notices(this.form)
-         this.danger("Notice was created");
+         this.success("Notice was created");
+        this.closeForm()
+
       }catch (e) {
          this.success(e.message);
 
