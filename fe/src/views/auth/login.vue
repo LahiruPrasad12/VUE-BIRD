@@ -65,11 +65,12 @@ export default {
       try {
         if (await this.$refs.loginValidation.validate()) {
           this.is_btn_loading = true
-          await authAPI.login(this.form)
+          let respond = await authAPI.login(this.form)
         }
       } catch (e) {
 
       }
+      this.is_btn_loading = true
 
     }
   }
